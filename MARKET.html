@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketplace Automation v1.0 — Developed by Danish Mureed</title>
+  <style>
+    :root {
+      --bg-main: #070b14;
+      --bg-card: #0f172a;
+      --bg-card-hover: #162038;
+      --border: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #10b981;
+      --glow: rgba(59, 130, 246, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background Glow Effects */
+    .bg-glow-1 {
+      position: fixed;
+      top: -150px;
+      left: -150px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59,130,246,0.16) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -150px;
+      right: -150px;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 11, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .brand-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-sub {
+      display: block;
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-btn {
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px var(--glow);
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 900px;
+      margin: 0 auto 20px;
+      background: linear-gradient(to right, #ffffff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 34px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.65);
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 16px 28px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+    }
+
+    .btn-contact:hover {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Quick Stats Strip */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stat-box h3 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+
+    .stat-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 4px 0 0;
+    }
+
+    /* Section Styling */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 70px 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header span {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .section-header h2 {
+      font-size: 34px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 10px auto 0;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      transition: all 0.25s ease;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(59, 130, 246, 0.45);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 14.5px;
+    }
+
+    /* Workflow Steps */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px;
+      position: relative;
+    }
+
+    .step-num {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .step-card h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Developer & Download Banner */
+    .dev-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 20px;
+      padding: 48px 32px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .dev-banner h2 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .dev-banner p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 28px;
+    }
+
+    .dev-info-box {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      background: rgba(7, 11, 20, 0.65);
+      border: 1px solid var(--border);
+      padding: 16px 28px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+
+    .dev-info-item {
+      font-size: 15px;
+    }
+
+    .dev-info-item strong {
+      color: #60a5fa;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding: 50px 20px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">MA</div>
+        <div>
+          <span class="brand-text">Marketplace Automation</span>
+          <span class="brand-sub">Developed by Danish Mureed</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#workflow">How It Works</a></li>
+        <li><a href="#contact">License & Support</a></li>
+      </ul>
+      <a href="https://www.mediafire.com/file/1fyt376c9rvd3nu/Marketplace_Automation_Setup_v1.0.exe/file" target="_blank" rel="noopener noreferrer" class="nav-btn">
+        ⬇ Download v1.0
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Official Release v1.0 • Windows 64-Bit Installer
+    </div>
+    <h1>Professional Facebook Marketplace Listing Automation</h1>
+    <p>
+      Built for controlled multi-account workflows. Automate USA &amp; UK Marketplace listings, manage bulk cookie accounts, auto-retry failed IDs, and verify up to 100,000 Facebook UIDs in real time.
+    </p>
+
+    <div class="cta-group">
+      <a href="https://www.mediafire.com/file/1fyt376c9rvd3nu/Marketplace_Automation_Setup_v1.0.exe/file" target="_blank" rel="noopener noreferrer" class="btn-download">
+        <span>⬇ Download Setup v1.0 (.EXE)</span>
+      </a>
+      <a href="https://wa.me/923131442497?text=Hello%20Danish%20Mureed,%20I%20want%20to%20buy%20a%20license%20key%20for%20Marketplace%20Automation." target="_blank" rel="noopener noreferrer" class="btn-contact">
+        <span>🔑 Buy License Key: 0313-1442497</span>
+      </a>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-box">
+        <h3>USA &amp; UK</h3>
+        <p>Dedicated Regional Engines</p>
+      </div>
+      <div class="stat-box">
+        <h3>100,000+</h3>
+        <p>Bulk Live/Dead UID Checker</p>
+      </div>
+      <div class="stat-box">
+        <h3>Auto-Retry</h3>
+        <p>Smart Failed Queue Recovery</p>
+      </div>
+      <div class="stat-box">
+        <h3>100% Secure</h3>
+        <p>Hardware-Locked Cloud License</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Features Section -->
+  <section id="features" class="section">
+    <div class="section-header">
+      <span>Powerful Capabilities</span>
+      <h2>Everything Included in Marketplace Automation</h2>
+      <p>Engineered for high-volume sellers and automation teams who need speed, accuracy, and zero browser crashes.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>USA &amp; UK Dual Engines</h3>
+        <p>Switch seamlessly between USA and UK Marketplace regions. Each region uses a dedicated engine for accurate categories, currencies, and location matching.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🍪</div>
+        <h3>Multi-Account &amp; Cookie Manager</h3>
+        <p>Add unlimited Facebook accounts via cookies or credentials. Copy single or all account cookies in one click, and repeat listings on any saved account anytime.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>Verified Publish &amp; Draft Workflow</h3>
+        <p>Automated multi-tab browser control that uploads product images, fills titles/prices, selects targeted cities, saves drafts, and verifies live published listings.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Smart Auto-Retry for Failed IDs</h3>
+        <p>Never lose progress on slow connections. Any failed account is automatically queued and retried once after the primary run finishes, or manually retried anytime.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>100K Bulk Live UID Checker</h3>
+        <p>Built-in high-speed Facebook UID verifier. Check up to 100,000 numeric UIDs at once with instant Live/Dead status filtering and one-click profile opening.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h3>Smart Location &amp; Image Distributor</h3>
+        <p>Import bulk city/location lists from TXT or CSV files. The engine automatically slices and assigns unique locations to each account and tab with high-res image previews.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Crash-Proof Chrome &amp; Edge Control</h3>
+        <p>Controls external Chrome/Edge processes safely with anti-close protection during active runs and automatic dashboard recovery under heavy tab loads.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Live Queue &amp; History Tracking</h3>
+        <p>Real-time logs for Completed IDs, Failed IDs, and Account History—tracking exact ads published count plus first and last targeted locations per UID.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Cloud HWID License Protection</h3>
+        <p>Instant license activation bound to your PC hardware ID with encrypted local credential storage and dark/light theme customization.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow Section -->
+  <section id="workflow" class="section">
+    <div class="section-header">
+      <span>Simple Setup</span>
+      <h2>Start Automating in 4 Easy Steps</h2>
+      <p>No complex configuration required. Install the setup and launch your first campaign in minutes.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <div class="step-card">
+        <span class="step-num">STEP 01</span>
+        <h4>Download &amp; Install</h4>
+        <p>Click the download button to get <strong>Marketplace_Automation_Setup_v1.0.exe</strong> from MediaFire and run the installer on your PC.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-num">STEP 02</span>
+        <h4>Activate Your License</h4>
+        <p>Contact <strong>Danish Mureed (03131442497)</strong> to get your license key, paste it into the activation screen, and unlock your workspace.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-num">STEP 03</span>
+        <h4>Import Accounts &amp; Data</h4>
+        <p>Select USA or UK region, import your Facebook cookie accounts, choose product images, and load your titles and location list.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-num">STEP 04</span>
+        <h4>Start Auto Flow</h4>
+        <p>Hit Start Automation. Watch live progress logs, desktop completion notifications, and automatic retry handling in real time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer & Download CTA Section -->
+  <section id="contact" class="section">
+    <div class="dev-banner">
+      <h2>Ready to Boost Your Marketplace Sales?</h2>
+      <p>Download the latest version of Marketplace Automation today or reach out directly for license activation and support.</p>
+
+      <div class="dev-info-box">
+        <div class="dev-info-item">👨‍💻 Developer: <strong>Danish Mureed</strong></div>
+        <div class="dev-info-item">📞 Contact / WhatsApp: <strong>03131442497</strong></div>
+        <div class="dev-info-item">📦 Version: <strong>v1.0 (64-Bit Windows)</strong></div>
+      </div>
+
+      <div class="cta-group" style="margin-bottom: 0;">
+        <a href="https://www.mediafire.com/file/1fyt376c9rvd3nu/Marketplace_Automation_Setup_v1.0.exe/file" target="_blank" rel="noopener noreferrer" class="btn-download">
+          ⬇ Download Marketplace Automation v1.0
+        </a>
+        <a href="https://wa.me/923131442497" target="_blank" rel="noopener noreferrer" class="btn-contact">
+          💬 Contact on WhatsApp (03131442497)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Marketplace Automation. Developed by <strong>Danish Mureed</strong> | Contact: <strong>03131442497</strong></p>
+  </footer>
+
+</body>
+</html>
